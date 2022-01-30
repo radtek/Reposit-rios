@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
-  FMX.Layouts, FMX.Controls.Presentation, FMX.Edit, FMX.StdCtrls, FMX.TabControl;
+  FMX.Layouts, FMX.Controls.Presentation, FMX.Edit, FMX.StdCtrls, FMX.TabControl,
+  System.Actions, FMX.ActnList;
 
 type
   TfrmLogin = class(TForm)
@@ -33,26 +34,47 @@ type
     RoundRect5: TRoundRect;
     edtContaSenha: TEdit;
     Layout8: TLayout;
-    RoundRect6: TRoundRect;
-    Label2: TLabel;
+    rctProximo: TRoundRect;
+    lblProximo: TLabel;
     Layout9: TLayout;
     RoundRect7: TRoundRect;
     edtContaEmail: TEdit;
     tbFoto: TTabItem;
     Layout10: TLayout;
-    Circle1: TCircle;
+    crcFoto: TCircle;
     Layout11: TLayout;
-    RoundRect8: TRoundRect;
+    rctCriaConta: TRoundRect;
     Label3: TLabel;
     tbEscolha: TTabItem;
     Layout12: TLayout;
     Label4: TLabel;
-    Image2: TImage;
-    Image3: TImage;
+    imgCamera: TImage;
+    imgGaleria: TImage;
     Layout13: TLayout;
-    Image4: TImage;
+    imgVoltarConta: TImage;
     Layout14: TLayout;
-    Image5: TImage;
+    imgVoltarEscolha: TImage;
+    Layout15: TLayout;
+    Layout16: TLayout;
+    lblLogin: TLabel;
+    lblCriaConta: TLabel;
+    Rectangle1: TRectangle;
+    ActionList1: TActionList;
+    actConta: TChangeTabAction;
+    actEscolha: TChangeTabAction;
+    actFoto: TChangeTabAction;
+    actLogin: TChangeTabAction;
+    Layout17: TLayout;
+    Layout18: TLayout;
+    lblContaLogin: TLabel;
+    Label6: TLabel;
+    Rectangle4: TRectangle;
+    procedure lblCriaContaClick(Sender: TObject);
+    procedure lblContaLoginClick(Sender: TObject);
+    procedure rctProximoClick(Sender: TObject);
+    procedure imgVoltarContaClick(Sender: TObject);
+    procedure crcFotoClick(Sender: TObject);
+    procedure imgVoltarEscolhaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -65,5 +87,35 @@ var
 implementation
 
 {$R *.fmx}
+
+procedure TfrmLogin.crcFotoClick(Sender: TObject);
+begin
+  actEscolha.Execute;
+end;
+
+procedure TfrmLogin.imgVoltarContaClick(Sender: TObject);
+begin
+  actConta.Execute;
+end;
+
+procedure TfrmLogin.imgVoltarEscolhaClick(Sender: TObject);
+begin
+  actFoto.Execute;
+end;
+
+procedure TfrmLogin.lblContaLoginClick(Sender: TObject);
+begin
+  actLogin.Execute;
+end;
+
+procedure TfrmLogin.lblCriaContaClick(Sender: TObject);
+begin
+  actConta.Execute;
+end;
+
+procedure TfrmLogin.rctProximoClick(Sender: TObject);
+begin
+  actFoto.Execute;
+end;
 
 end.
