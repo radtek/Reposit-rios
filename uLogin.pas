@@ -6,7 +6,9 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
   FMX.Layouts, FMX.Controls.Presentation, FMX.Edit, FMX.StdCtrls, FMX.TabControl,
-  System.Actions, FMX.ActnList;
+  System.Actions, FMX.ActnList
+  {Para pedir permissão da câmera e galeria}
+  , u99Permissions, FMX.MediaLibrary.Actions, FMX.StdActns;
 
 type
   TfrmLogin = class(TForm)
@@ -69,14 +71,25 @@ type
     lblContaLogin: TLabel;
     Label6: TLabel;
     Rectangle4: TRectangle;
+    actLibrary: TTakePhotoFromLibraryAction;
+    actCamera: TTakePhotoFromCameraAction;
     procedure lblCriaContaClick(Sender: TObject);
     procedure lblContaLoginClick(Sender: TObject);
     procedure rctProximoClick(Sender: TObject);
     procedure imgVoltarContaClick(Sender: TObject);
     procedure crcFotoClick(Sender: TObject);
     procedure imgVoltarEscolhaClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure imgCameraClick(Sender: TObject);
+    procedure imgGaleriaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure actLibraryDidFinishTaking(Image: TBitmap);
+    procedure actCameraDidFinishTaking(Image: TBitmap);
   private
     { Private declarations }
+    lPermissao : T99Permissions;
+    procedure TrataErroPermissao(Sender : TObject);
   public
     { Public declarations }
   end;
@@ -88,9 +101,51 @@ implementation
 
 {$R *.fmx}
 
+procedure TfrmLogin.actCameraDidFinishTaking(Image: TBitmap);
+begin
+  crcFoto.Fill.Bitmap.Bitmap := Image;
+  actFoto.Execute;
+end;
+
+procedure TfrmLogin.actLibraryDidFinishTaking(Image: TBitmap);
+begin
+  crcFoto.Fill.Bitmap.Bitmap := Image;
+  actFoto.Execute;
+end;
+
 procedure TfrmLogin.crcFotoClick(Sender: TObject);
 begin
   actEscolha.Execute;
+end;
+
+procedure TfrmLogin.FormCreate(Sender: TObject);
+begin
+  lPermissao := T99Permissions.Create;
+end;
+
+procedure TfrmLogin.FormDestroy(Sender: TObject);
+begin
+  lPermissao.DisposeOf;
+end;
+
+procedure TfrmLogin.FormShow(Sender: TObject);
+begin
+  TabControl1.ActiveTab := tbLogin;
+end;
+
+procedure TfrmLogin.TrataErroPermissao(Sender : TObject);
+begin
+  showmessage('Você não possui permissão de acesso para este recurso');
+end;
+
+procedure TfrmLogin.imgCameraClick(Sender: TObject);
+begin
+  lPermissao.Camera(actCamera, TrataErroPermissao);
+end;
+
+procedure TfrmLogin.imgGaleriaClick(Sender: TObject);
+begin
+  lPermissao.PhotoLibrary(actLibrary, TrataErroPermissao);
 end;
 
 procedure TfrmLogin.imgVoltarContaClick(Sender: TObject);
